@@ -6,7 +6,7 @@ app = Flask(__name__, static_folder='static')
 app.secret_key = 'uznavaykin-secret-2026'
 
 users = {
-    'CatNap': {'password': '120187, 'role': 'premium', 'admin': True, 'muted_until': 0},
+    'CatNap': {'password': '120187', 'role': 'premium', 'admin': True, 'muted_until': 0},
     'Назар': {'password': '120187', 'role': 'premium', 'admin': True, 'muted_until': 0}
 }
 user_profiles = {}
@@ -286,3 +286,4 @@ def update_activity():
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+
