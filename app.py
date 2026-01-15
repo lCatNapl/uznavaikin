@@ -145,44 +145,75 @@ def catalog():
     if path == 'Minecraft':
         content = '''
         <h2 style="text-align:center;margin:50px 0;font-size:34px;color:#2d5a2d;">🟩 MINECRAFT</h2>
-        <div style="background:#e9f7ef;padding:30px;border-radius:20px;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-            <h3 style="color:#2d5a2d;">🎮 Описание</h3>
-            <p style="font-size:16px;line-height:1.6;">Кубический мир песочницы с бесконечными возможностями! Строительство, выживание, мультиплеер.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:25px;">
+            <div style="background:#e9f7ef;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                <h3 style="color:#2d5a2d;">🌐 НАШ СЕРВЕР</h3>
+                <p><b>IP:</b> <span style="color:#4caf50;font-size:18px;">mc.uznavaykin.ru:25565</span></p>
+                <p><b>Версия:</b> 1.20.4 | <b>Онлайн:</b> 47/200</p>
+                <button onclick="copyIP('mc.uznavaykin.ru:25565')" style="width:100%;padding:12px;background:#4caf50;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;">📋 Копировать IP</button>
+            </div>
+            <div style="background:#e9f7ef;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                <h3 style="color:#2d5a2d;">🎮 Snake Game</h3>
+                <p>Играй прямо в браузере!</p>
+                <a href="/game/snake" style="width:100%;padding:12px;background:#2d5a2d;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;display:block;text-align:center;text-decoration:none;">▶️ Играть</a>
+            </div>
         </div>
         '''
     elif path == 'World of Tanks':
         content = '''
         <h2 style="text-align:center;margin:50px 0;font-size:34px;color:#8b0000;">⚔️ WORLD OF TANKS</h2>
-        <div style="background:#f9e8e8;padding:30px;border-radius:20px;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-            <h3 style="color:#8b0000;">🎮 Описание</h3>
-            <p style="font-size:16px;line-height:1.6;">Эпические танковые бои! 30vs30, прокачка техники, кланы и турниры.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:25px;">
+            <div style="background:#f9e8e8;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                <h3 style="color:#8b0000;">📺 ТУРНИРЫ</h3>
+                <p>Следующий турнир: <b>20 января 20:00</b></p>
+                <p>Призовой фонд: <span style="color:#ffd700;">5000₽</span></p>
+                <a href="/wot/tournament" style="width:100%;padding:12px;background:#8b0000;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;display:block;text-align:center;text-decoration:none;">📢 Записаться</a>
+            </div>
+            <div style="background:#f9e8e8;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                <h3 style="color:#8b0000;">🎮 Тестер танков</h3>
+                <p>Проверь свою тактику!</p>
+                <a href="/game/tank-test" style="width:100%;padding:12px;background:#b71c1c;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;display:block;text-align:center;text-decoration:none;">▶️ Тестер</a>
+            </div>
         </div>
         '''
     else:
         content = '''
         <h1 style="text-align:center;margin:50px 0;font-size:42px;">📁 ИГРЫ</h1>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px;">
-            <a href="/catalog?path=Minecraft" style="background:white;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;text-decoration:none;display:block;transition:all 0.3s;">
-                <div style="width:90px;height:90px;background:#4caf50;margin:0 auto 20px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:40px;">🟩</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:30px;">
+            <a href="/catalog?path=Minecraft" style="background:#e9f7ef;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;text-decoration:none;display:block;transition:all 0.3s;border:3px solid #4caf50;">
+                <div style="width:90px;height:90px;background:#4caf50;margin:0 auto 20px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 8px 20px rgba(76,175,80,0.4);">🟩</div>
                 <h2 style="font-size:28px;color:#2d5a2d;">Minecraft</h2>
+                <p style="color:#666;">Сервер + мини-игры</p>
             </a>
-            <a href="/catalog?path=World of Tanks" style="background:white;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;text-decoration:none;display:block;transition:all 0.3s;">
-                <div style="width:90px;height:90px;background:#8b0000;margin:0 auto 20px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:40px;">⚔️</div>
+            <a href="/catalog?path=World of Tanks" style="background:#f9e8e8;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;text-decoration:none;display:block;transition:all 0.3s;border:3px solid #8b0000;">
+                <div style="width:90px;height:90px;background:#8b0000;margin:0 auto 20px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 8px 20px rgba(139,0,0,0.4);">⚔️</div>
                 <h2 style="font-size:28px;color:#8b0000;">World of Tanks</h2>
+                <p style="color:#666;">Турниры + тестер</p>
             </a>
         </div>
         '''
     
     return f'''
     <!DOCTYPE html>
-    <html><head><title>Каталог</title><meta charset="utf-8">
-    <style>body{{font-family:Arial;padding:20px;background:#f8f9fa;}}
+    <html><head><title>Каталог - {path or "Игры"}</title><meta charset="utf-8">
+    <style>body{{font-family:Arial,sans-serif;padding:20px;background:#f8f9fa;}}
     a:hover{{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.2)!important;}}</style></head>
-    <body>{content}
-    <div style="text-align:center;margin:60px 0;">
-        <a href="/" style="background:#007bff;color:white;padding:18px 35px;border-radius:12px;font-size:18px;font-weight:bold;text-decoration:none;">🏠 Главная</a>
-    </div></body></html>
+    <body>
+    <div style="max-width:1200px;margin:0 auto;">
+        {content}
+        <div style="text-align:center;margin:60px 0;">
+            <a href="/" style="background:#007bff;color:white;padding:18px 35px;border-radius:12px;font-size:18px;font-weight:bold;text-decoration:none;">🏠 Главная страница</a>
+        </div>
+    </div>
+    <script>
+    function copyIP(ip) {{
+        navigator.clipboard.writeText(ip);
+        alert('IP скопирован: ' + ip);
+    }}
+    </script>
+    </body></html>
     '''
+
 
 @app.route('/profiles')
 def profiles():
@@ -408,3 +439,4 @@ def update_activity():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
+
