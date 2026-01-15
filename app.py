@@ -1,34 +1,18 @@
-from flask import Flask, request, redirect, url_for, session, jsonify
+from flask import Flask, request, redirect, url_for, session
 from datetime import datetime
 import time
-import re
-import os
 
 app = Flask(__name__, static_folder='static')
-app.secret_key = 'uznavaykin-2026-super-ultra-secret'
+app.secret_key = 'uznavaykin-secret-2026'
 
-# ДАННЫЕ
 users = {
-    'CatNap': {'password': '***', 'role': 'premium', 'admin': True, 'muted_until': 0},
-    'Назар': {'password': '***', 'role': 'premium', 'admin': True, 'muted_until': 0}
+    'CatNap': {'password': '120187, 'role': 'premium', 'admin': True, 'muted_until': 0},
+    'Назар': {'password': '120187', 'role': 'premium', 'admin': True, 'muted_until': 0}
 }
 user_profiles = {}
 user_roles = {}
 user_activity = {}
 chat_messages = []
-
-# СКРЫТЫЙ ФИЛЬТР
-banned_words = ['spam1', 'spam2']
-def filter_message(message):
-    for word in banned_words:
-        message = message.replace(word, '[ФИЛЬТР]')
-    return message
-
-category_structure = {
-    'Minecraft': {'logo': '<img src="/static/minecraft_logo.png" style="width:90px;height:90px;">', 'subcategories': {}},
-    'World of Tanks': {'logo': '<img src="/static/wot_logo.jpg" style="width:90px;height:90px;">', 'subcategories': {}}
-}
-catalog_items = {}
 
 def get_timestamp():
     return time.time()
@@ -57,25 +41,27 @@ def index():
     current_user = session.get('user')
     stats = calculate_stats()
     
-    html = f'''
+    role = user_roles.get(current_user, 'start') if current_user else ''
+    
+    html = '''
     <!DOCTYPE html>
-    <html><head><title>Узнавайкин</title><meta charset="utf-8">
-    <style>*{{margin:0;padding:0;box-sizing:border-box;}}
-    body{{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px;}}
-    .container{{max-width:1200px;margin:0 auto;background:white;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.1);}}
-    .header{{padding:30px;background:linear-gradient(45deg,#ff6b6b,#4ecdc4);color:white;text-align:center;}}
-    .stats{{display:flex;gap:15px;justify-content:center;padding:20px;background:#e9ecef;flex-wrap:wrap;}}
-    .stat-card{{background:white;padding:15px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1);text-align:center;min-width:100px;}}
-    .nav{{display:flex;justify-content:center;gap:10px;padding:20px;flex-wrap:wrap;}}
-    .nav-btn{{padding:12px 25px;background:#007bff;color:white;text-decoration:none;border-radius:8px;font-weight:bold;}}
-    .nav-btn:hover{{background:#0056b3;transform:translateY(-2px);}}
-    .admin-btn{{background:#dc3545;}}</style></head>
+    <html><head><title>Узнавайкин</title>
+    <meta charset="utf-8">
+    <style>*{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px;}
+    .container{max-width:1200px;margin:0 auto;background:white;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.1);}
+    .header{padding:30px;background:linear-gradient(45deg,#ff6b6b,#4ecdc4);color:white;text-align:center;}
+    .stats{display:flex;gap:15px;justify-content:center;padding:20px;background:#e9ecef;flex-wrap:wrap;}
+    .stat-card{background:white;padding:15px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1);text-align:center;min-width:100px;}
+    .nav{display:flex;justify-content:center;gap:10px;padding:20px;flex-wrap:wrap;}
+    .nav-btn{padding:12px 25px;background:#007bff;color:white;text-decoration:none;border-radius:8px;font-weight:bold;}
+    .nav-btn:hover{background:#0056b3;transform:translateY(-2px);}
+    .admin-btn{background:#dc3545;}</style></head>
     <body>
     <div class="container">
     '''
     
     if current_user:
-        role = user_roles.get(current_user, 'start')
         html += f'''
         <div class="header">
             <h1>🏠 Узнавайкин</h1>
@@ -111,7 +97,7 @@ def index():
         html += '<a href="/admin" class="nav-btn admin-btn">🔧 Админ</a>'
     
     if current_user:
-        html += f'<a href="/profile/{current_user}" class="nav-btn">👤 Мой профиль</a>'
+        html += f'<a href="/profile/{current_user}" class="nav-btn">👤 Профиль</a>'
         html += '<a href="/logout" class="nav-btn">🚪 Выход</a>'
     else:
         html += '<a href="/login" class="nav-btn">🔐 Войти</a>'
@@ -125,14 +111,13 @@ def login():
         username = request.form['username'].strip()
         password = request.form['password']
         
-        if username in users or username not in users:
-            session['user'] = username
-            if username not in user_roles:
-                user_roles[username] = 'start'
-                if username not in users:
-                    users[username] = {'password': password, 'role': 'start', 'admin': False, 'muted_until': 0}
-            user_activity[username] = get_timestamp()
-            return redirect(url_for('index'))
+        session['user'] = username
+        if username not in user_roles:
+            user_roles[username] = 'start'
+            if username not in users:
+                users[username] = {'password': password, 'role': 'start', 'admin': False, 'muted_until': 0}
+        user_activity[username] = get_timestamp()
+        return redirect(url_for('index'))
     
     return '''
     <!DOCTYPE html>
@@ -150,9 +135,13 @@ def login():
     </body></html>
     '''
 
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
+
 @app.route('/catalog')
 def catalog():
-    path = request.args.get('path', '')
     html = '''
     <!DOCTYPE html>
     <html><head><title>Каталог</title>
@@ -160,29 +149,19 @@ def catalog():
     <style>body{font-family:Arial;padding:20px;background:#f8f9fa;}
     .category-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px;}
     .category-card{background:white;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;cursor:pointer;transition:all 0.3s;}
-    .category-card:hover{transform:translateY(-10px);box-shadow:0 25px 50px rgba(0,0,0,0.2);}
-    .logo{{margin:0 auto 20px;display:block;}}</style></head>
+    .category-card:hover{transform:translateY(-10px);box-shadow:0 25px 50px rgba(0,0,0,0.2);}</style></head>
     <body>
-    '''
-    
-    if not path:
-        html += '''
-        <h1 style="text-align:center;margin:50px 0;font-size:42px;">📁 ИГРЫ</h1>
-        <div class="category-grid">
-            <a href="/catalog?path=Minecraft" class="category-card" style="text-decoration:none;">
-                <div class="logo">''' + category_structure['Minecraft']['logo'] + '''</div>
-                <h2 style="font-size:28px;color:#2d5a2d;">Minecraft</h2>
-            </a>
-            <a href="/catalog?path=World of Tanks" class="category-card" style="text-decoration:none;">
-                <div class="logo">''' + category_structure['World of Tanks']['logo'] + '''</div>
-                <h2 style="font-size:28px;color:#8b0000;">World of Tanks</h2>
-            </a>
-        </div>
-        '''
-    else:
-        html += f'<h1 style="text-align:center;margin:50px 0;">📂 {path}</h1><p style="text-align:center;color:#666;font-size:20px;">Пока пусто...</p>'
-    
-    html += '''
+    <h1 style="text-align:center;margin:50px 0;font-size:42px;">📁 ИГРЫ</h1>
+    <div class="category-grid">
+        <a href="/catalog?path=Minecraft" class="category-card" style="text-decoration:none;">
+            <img src="/static/minecraft_logo.png" style="width:90px;height:90px;border-radius:15px;margin:0 auto 20px;display:block;">
+            <h2 style="font-size:28px;color:#2d5a2d;">Minecraft</h2>
+        </a>
+        <a href="/catalog?path=World of Tanks" class="category-card" style="text-decoration:none;">
+            <img src="/static/wot_logo.jpg" style="width:90px;height:90px;border-radius:15px;margin:0 auto 20px;display:block;">
+            <h2 style="font-size:28px;color:#8b0000;">World of Tanks</h2>
+        </a>
+    </div>
     <div style="text-align:center;margin:60px 0;">
         <a href="/" style="background:#007bff;color:white;padding:18px 35px;border-radius:12px;font-size:18px;font-weight:bold;text-decoration:none;">🏠 Главная</a>
     </div>
@@ -195,8 +174,8 @@ def profiles():
     html = '''
     <!DOCTYPE html>
     <html><head><title>Профили</title>
-    <style>body{{font-family:Arial;padding:30px;background:#f0f2f5;}}
-    .profiles-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;}}</style></head>
+    <style>body{font-family:Arial;padding:30px;background:#f0f2f5;}
+    .profiles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;}</style></head>
     <body>
     <h1 style="text-align:center;margin-bottom:40px;">👥 Все профили</h1>
     <div class="profiles-grid">
@@ -209,7 +188,8 @@ def profiles():
         </div>
         '''
     html += '''
-    </div><p style="text-align:center;margin-top:50px;">
+    </div>
+    <p style="text-align:center;margin-top:50px;">
         <a href="/" style="background:#007bff;color:white;padding:20px 40px;border-radius:15px;font-size:18px;">🏠 Главная</a>
     </p></body></html>
     '''
@@ -217,16 +197,15 @@ def profiles():
 
 @app.route('/profile/<username>')
 def profile(username):
-    role_class = 'start'
-    role_text = 'Start'
-    if username in users:
-        if users[username].get('admin'):
-            role_class = 'admin'
-            role_text = 'Администратор'
-        else:
-            role = user_roles.get(username, 'start')
-            role_class = role
-            role_text = role.upper()
+    if username not in users:
+        return '<h1 style="color:red;text-align:center;padding:100px;">Пользователь не найден</h1><a href="/" style="display:block;text-align:center;">🏠 Главная</a>'
+    
+    is_admin = users[username].get('admin', False)
+    role = user_roles.get(username, 'start')
+    
+    role_class = 'admin' if is_admin else role
+    role_color = 'red' if is_admin else 'gold' if role == 'premium' else 'green' if role == 'vip' else 'gray'
+    role_text = 'Администратор' if is_admin else role.upper()
     
     return f'''
     <!DOCTYPE html>
@@ -237,7 +216,7 @@ def profile(username):
     <div class="profile-card">
         <h1 style="text-align:center;margin-bottom:30px;">{username}</h1>
         <div style="text-align:center;padding:15px;background:#e9ecef;border-radius:20px;margin-bottom:30px;">
-            <span style="padding:10px 20px;background:{'red' if role_class==\'admin\' else 'gold' if role_class==\'premium\' else 'green' if role_class==\'vip\' else 'gray'};color:white;border-radius:25px;font-size:18px;font-weight:bold;">
+            <span style="padding:10px 20px;background:{role_color};color:white;border-radius:25px;font-size:18px;font-weight:bold;">
                 {role_text}
             </span>
         </div>
@@ -251,31 +230,47 @@ def profile(username):
 @app.route('/chat')
 def chat():
     return '''
-    <h1 style="text-align:center;padding:100px;">💬 Чат в разработке</h1>
-    <p style="text-align:center;"><a href="/" style="background:#007bff;color:white;padding:15px 30px;border-radius:10px;">🏠 Главная</a></p>
+    <!DOCTYPE html>
+    <html><head><title>Чат</title>
+    <style>body{{font-family:Arial;padding:100px;text-align:center;background:#f8f9fa;}}</style></head>
+    <body>
+    <h1 style="font-size:48px;">💬 Чат</h1>
+    <p style="font-size:24px;color:#666;">Чат в разработке...</p>
+    <p style="margin-top:50px;">
+        <a href="/" style="background:#007bff;color:white;padding:20px 40px;border-radius:15px;font-size:18px;">🏠 Главная</a>
+    </p>
+    </body></html>
     '''
 
 @app.route('/community')
 def community():
     return '''
-    <h1 style="text-align:center;padding:100px;font-size:48px;">💬 Сообщество</h1>
-    <p style="text-align:center;"><a href="https://t.me/ssylkanatelegramkanalyznaikin">Telegram</a></p>
-    <p style="text-align:center;"><a href="/" style="background:#007bff;color:white;padding:20px 40px;border-radius:15px;">🏠 Главная</a></p>
+    <!DOCTYPE html>
+    <html><head><title>Сообщество</title>
+    <style>body{{font-family:Arial;padding:100px 20px;text-align:center;background:#f8f9fa;}}</style></head>
+    <body>
+    <h1 style="font-size:48px;">💬 Сообщество</h1>
+    <p style="font-size:24px;"><a href="https://t.me/ssylkanatelegramkanalyznaikin" style="color:#0088cc;">Telegram канал</a></p>
+    <p style="margin-top:50px;">
+        <a href="/" style="background:#007bff;color:white;padding:20px 40px;border-radius:15px;font-size:18px;">🏠 Главная</a>
+    </p>
+    </body></html>
     '''
 
 @app.route('/admin')
 def admin():
-    if session.get('user') not in users or not users[session.get('user', {}).get('admin')]:
-        return '<h1 style="color:red;">Только админы!</h1>'
+    current_user = session.get('user')
+    if not current_user or not users.get(current_user, {}).get('admin'):
+        return '<h1 style="color:red;text-align:center;padding:100px;">❌ Только для админов!</h1>'
     return '''
-    <h1>🔧 Админ панель</h1>
-    <a href="/" style="background:green;color:white;padding:15px 30px;">🏠 Главная</a>
+    <!DOCTYPE html>
+    <html><head><title>Админ</title></head>
+    <body>
+    <h1 style="text-align:center;padding:50px;">🔧 Админ панель</h1>
+    <p style="text-align:center;">В разработке...</p>
+    <p style="text-align:center;"><a href="/" style="background:#28a745;color:white;padding:15px 30px;border-radius:10px;">🏠 Главная</a></p>
+    </body></html>
     '''
-
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('index'))
 
 @app.route('/buy/<role>')
 def buy(role):
@@ -290,4 +285,4 @@ def update_activity():
         user_activity[user] = get_timestamp()
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
