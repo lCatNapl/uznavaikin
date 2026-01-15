@@ -1,27 +1,28 @@
-from flask import Flask, request, redirect, url_for, session, jsonify
+from flask import Flask, request, redirect, url_for, session
 from datetime import datetime
 import time
 import os
-import re
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'uznavaykin-secret-2026'
 
+# ДАННЫЕ
 users = {
-    'CatNap': {'password': '120187', 'role': 'premium', 'admin': True, 'muted_until': 0},
-    'Назар': {'password': '120187', 'role': 'premium', 'admin': True, 'muted_until': 0}
+    'CatNap': {'password': '120187', 'role': 'premium', 'admin': True},
+    'Назар': {'password': '120187', 'role': 'premium', 'admin': True}
 }
 user_profiles = {}
 user_roles = {}
 user_activity = {}
-chat_messages = []
+minecraft_chat = []
 
-# СКРЫТЫЙ ФИЛЬТР
-banned_words = ['spam', 'bad']
-def filter_message(msg):
-    for word in banned_words:
-        msg = re.sub(word, '[ФИЛЬТР]', msg, flags=re.IGNORECASE)
-    return msg
+# КАТАЛОГ (пустые папки)
+catalog = {
+    'Каталог': {
+        'Minecraft': {},
+        'World of Tanks': {}
+    }
+}
 
 def get_timestamp():
     return time.time()
@@ -50,8 +51,6 @@ def index():
     current_user = session.get('user')
     stats = calculate_stats()
     
-    role = user_roles.get(current_user, 'start') if current_user else ''
-    
     html = '''
     <!DOCTYPE html>
     <html><head><title>Узнавайкин</title>
@@ -71,6 +70,7 @@ def index():
     '''
     
     if current_user:
+        role = user_roles.get(current_user, 'start')
         html += f'<div class="header"><h1>🏠 Узнавайкин</h1><p>👤 <b>{current_user}</b> | <span style="color:gold;">{role.upper()}</span></p></div>'
     else:
         html += '<div class="header"><h1>🏠 Узнавайкин</h1><p>Добро пожаловать!</p></div>'
@@ -85,17 +85,16 @@ def index():
         <div class="stat-card"><b>{stats['admin']}</b><br>Админы</div>
     </div>
     <div class="nav">
-        <a href="/catalog" class="nav-btn">📁 Каталог</a>
-        <a href="/chat" class="nav-btn">💬 Чат</a>
-        <a href="/profiles" class="nav-btn">👥 Профили</a>
+        <a href="/catalog" class="nav-btn">📁 КАТАЛОГ</a>
+        <a href="/profiles" class="nav-btn">👥 ПРОФИЛИ</a>
         <a href="/community" class="nav-btn">📢 TG</a>
     '''
     
-    if current_user and users.get(current_user, {}).get('admin'):
-        html += '<a href="/admin" class="nav-btn admin-btn">🔧 Админ</a>'
-    
     if current_user:
-        html += f'<a href="/profile/{current_user}" class="nav-btn">👤 Профиль</a><a href="/logout" class="nav-btn">🚪 Выход</a>'
+        html += f'<a href="/profile/{current_user}" class="nav-btn">👤 Профиль</a>'
+        if users.get(current_user, {}).get('admin'):
+            html += '<a href="/admin" class="nav-btn admin-btn">🔧 Админ</a>'
+        html += '<a href="/logout" class="nav-btn">🚪 Выход</a>'
     else:
         html += '<a href="/login" class="nav-btn">🔐 Войти</a>'
     
@@ -112,12 +111,12 @@ def login():
         if username not in user_roles:
             user_roles[username] = 'start'
             if username not in users:
-                users[username] = {'password': password, 'role': 'start', 'admin': False, 'muted_until': 0}
-                user_profiles[username] = {'bio': '', 'games': ['Minecraft'], 'achievements': ['Новичок'], 'join_date': '2026-01-15'}
+                users[username] = {'password': password, 'role': 'start', 'admin': False}
+                user_profiles[username] = {'bio': '', 'achievements': [], 'join_date': '2026-01-15'}
         user_activity[username] = get_timestamp()
         return redirect(url_for('index'))
     
-        return '''
+    return '''
     <!DOCTYPE html>
     <html><head><title>Вход</title>
     <style>body{font-family:Arial;padding:50px;text-align:center;background:linear-gradient(135deg,#667eea,#764ba2);}
@@ -133,87 +132,160 @@ def login():
     </body></html>
     '''
 
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('index'))
-
+@app.route('/catalog/<path:path>')
 @app.route('/catalog')
-def catalog():
-    path = request.args.get('path', '')
+def catalog(path=''):
+    current_path = path.split('/') if path else []
     
-    if path == 'Minecraft':
-        content = '''
-        <h2 style="text-align:center;margin:50px 0;font-size:34px;color:#2d5a2d;">🟩 MINECRAFT</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:25px;">
-            <div style="background:#e9f7ef;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                <h3 style="color:#2d5a2d;">🌐 НАШ СЕРВЕР</h3>
-                <p><b>IP:</b> <span style="color:#4caf50;font-size:18px;">mc.uznavaykin.ru:25565</span></p>
-                <p><b>Версия:</b> 1.20.4 | <b>Онлайн:</b> 47/200</p>
-                <button onclick="copyIP('mc.uznavaykin.ru:25565')" style="width:100%;padding:12px;background:#4caf50;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;">📋 Копировать IP</button>
-            </div>
-            <div style="background:#e9f7ef;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                <h3 style="color:#2d5a2d;">🎮 Snake Game</h3>
-                <p>Играй прямо в браузере!</p>
-                <a href="/game/snake" style="width:100%;padding:12px;background:#2d5a2d;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;display:block;text-align:center;text-decoration:none;">▶️ Играть</a>
-            </div>
-        </div>
-        '''
-    elif path == 'World of Tanks':
-        content = '''
-        <h2 style="text-align:center;margin:50px 0;font-size:34px;color:#8b0000;">⚔️ WORLD OF TANKS</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:25px;">
-            <div style="background:#f9e8e8;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                <h3 style="color:#8b0000;">📺 ТУРНИРЫ</h3>
-                <p>Следующий турнир: <b>20 января 20:00</b></p>
-                <p>Призовой фонд: <span style="color:#ffd700;">5000₽</span></p>
-                <a href="/wot/tournament" style="width:100%;padding:12px;background:#8b0000;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;display:block;text-align:center;text-decoration:none;">📢 Записаться</a>
-            </div>
-            <div style="background:#f9e8e8;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                <h3 style="color:#8b0000;">🎮 Тестер танков</h3>
-                <p>Проверь свою тактику!</p>
-                <a href="/game/tank-test" style="width:100%;padding:12px;background:#b71c1c;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer;display:block;text-align:center;text-decoration:none;">▶️ Тестер</a>
-            </div>
-        </div>
-        '''
-    else:
-        content = '''
-        <h1 style="text-align:center;margin:50px 0;font-size:42px;">📁 ИГРЫ</h1>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:30px;">
-            <a href="/catalog?path=Minecraft" style="background:#e9f7ef;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;text-decoration:none;display:block;transition:all 0.3s;border:3px solid #4caf50;">
-                <div style="width:90px;height:90px;background:#4caf50;margin:0 auto 20px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 8px 20px rgba(76,175,80,0.4);">🟩</div>
-                <h2 style="font-size:28px;color:#2d5a2d;">Minecraft</h2>
-                <p style="color:#666;">Сервер + мини-игры</p>
-            </a>
-            <a href="/catalog?path=World of Tanks" style="background:#f9e8e8;padding:35px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,0.1);text-align:center;text-decoration:none;display:block;transition:all 0.3s;border:3px solid #8b0000;">
-                <div style="width:90px;height:90px;background:#8b0000;margin:0 auto 20px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 8px 20px rgba(139,0,0,0.4);">⚔️</div>
-                <h2 style="font-size:28px;color:#8b0000;">World of Tanks</h2>
-                <p style="color:#666;">Турниры + тестер</p>
-            </a>
-        </div>
-        '''
+    # Построить путь
+    current_folder = catalog
+    for part in current_path:
+        if part in current_folder:
+            current_folder = current_folder[part]
+        else:
+            current_folder = {}
     
-    return f'''
+    html = '''
     <!DOCTYPE html>
-    <html><head><title>Каталог - {path or "Игры"}</title><meta charset="utf-8">
-    <style>body{{font-family:Arial,sans-serif;padding:20px;background:#f8f9fa;}}
-    a:hover{{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.2)!important;}}</style></head>
+    <html><head><title>Каталог</title>
+    <meta charset="utf-8">
+    <style>body{font-family:Arial;padding:20px;background:#f8f9fa;}
+    .container{max-width:1200px;margin:0 auto;}
+    .breadcrumbs{margin:30px 0;font-size:18px;}
+    .breadcrumbs a{color:#007bff;text-decoration:none;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;}
+    .folder-card{background:#e3f2fd;padding:25px;border-radius:20px;border-left:5px solid #2196f3;cursor:pointer;transition:all 0.3s;}
+    .folder-card:hover{transform:translateY(-5px);box-shadow:0 15px 30px rgba(0,0,0,0.2);}
+    .item-card{background:#f3e5f5;padding:25px;border-radius:20px;border-left:5px solid #9c27b0;}
+    .item-title{font-size:20px;font-weight:bold;margin-bottom:10px;color:#333;}
+    .item-info{color:#666;line-height:1.6;}
+    .back-btn{background:#007bff;color:white;padding:15px 30px;border-radius:12px;font-size:18px;font-weight:bold;text-decoration:none;display:inline-block;margin:40px 0;}
+    .minecraft-chat{background:#4caf50;color:white;padding:15px;border-radius:10px;text-align:center;font-weight:bold;margin:20px 0;}</style></head>
     <body>
-    <div style="max-width:1200px;margin:0 auto;">
-        {content}
-        <div style="text-align:center;margin:60px 0;">
-            <a href="/" style="background:#007bff;color:white;padding:18px 35px;border-radius:12px;font-size:18px;font-weight:bold;text-decoration:none;">🏠 Главная страница</a>
+    <div class="container">
+    '''
+    
+    # Хлебные крошки
+    html += '<div class="breadcrumbs">📁 '
+    breadcrumb_path = ''
+    html += '<a href="/catalog">Каталог</a>'
+    for i, part in enumerate(current_path):
+        breadcrumb_path += part + '/'
+        html += f' → <a href="/catalog/{breadcrumb_path[:-1]}">{part}</a>'
+    html += '</div>'
+    
+    # Чат только в Minecraft
+    if current_path == ['Каталог', 'Minecraft']:
+        html += '''
+        <div class="minecraft-chat">
+            <a href="/minecraft-chat" style="color:white;text-decoration:none;">💬 ЧАТ MINECRAFT</a>
+        </div>
+        '''
+    
+    # Содержимое папки
+    if current_folder:
+        folders = {k for k in current_folder.keys() if isinstance(current_folder[k], dict)}
+        items = {k for k in current_folder.keys() if not isinstance(current_folder[k], dict)}
+        
+        if folders or items:
+            html += '<div class="grid">'
+            
+            # Папки
+            for folder_name in sorted(folders):
+                full_path = '/catalog/' + '/'.join(current_path + [folder_name])
+                html += f'''
+                <a href="{full_path}" class="folder-card">
+                    <h3 style="margin:0 0 10px 0;color:#2196f3;">📁 {folder_name}</h3>
+                    <p style="margin:0;color:#666;">Папка</p>
+                </a>
+                '''
+            
+            # Предметы
+            for item_name in sorted(items):
+                item = current_folder[item_name]
+                photo = item.get('photo', '')
+                html += f'''
+                <div class="item-card">
+                    <h3 class="item-title">{item_name}</h3>
+                    <p><b>Нахождение:</b> {item.get("location", "Каталог")}</p>
+                    <div class="item-info">{item.get("info", "")}</div>
+                    {f'<img src="/static/{photo}" style="max-width:100%;border-radius:10px;margin-top:15px;" alt="Фото">' if photo else ''}
+                </div>
+                '''
+            
+            html += '</div>'
+        else:
+            html += '<p style="text-align:center;color:#666;font-size:20px;margin:60px 0;">📭 Папка пустая</p>'
+    else:
+        html += '<p style="text-align:center;color:#666;font-size:20px;margin:60px 0;">📁 <a href="/catalog">Вернуться в Каталог</a></p>'
+    
+    html += '''
+        <div style="text-align:center;">
+            <a href="/" class="back-btn">🏠 Главная</a>
+        </div>
+    </div></body></html>
+    '''
+    return html
+
+@app.route('/minecraft-chat', methods=['GET', 'POST'])
+def minecraft_chat():
+    current_user = session.get('user')
+    if not current_user:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        message = request.form['message'].strip()
+        if message and len(message) <= 200:
+            minecraft_chat.append({
+                'user': current_user,
+                'text': message,
+                'time': get_timestamp()
+            })
+            minecraft_chat[:] = minecraft_chat[-50:]
+    
+    html = '''
+    <!DOCTYPE html>
+    <html><head><title>Minecraft Чат</title>
+    <meta charset="utf-8">
+    <style>body{font-family:Arial;padding:20px;background:#4caf50;}
+    #chat{max-width:800px;margin:0 auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,0.3);}
+    #messages{max-height:400px;overflow-y:auto;padding:20px;background:#e8f5e8;}
+    .msg{margin-bottom:15px;padding:12px;background:#c8e6c9;border-radius:10px;}
+    .msg-header{font-weight:bold;color:#2e7d32;font-size:14px;margin-bottom:5px;}
+    #input{padding:20px;border-top:1px solid #ddd;}
+    input{width:70%;padding:10px;border:2px solid #4caf50;border-radius:8px;}
+    button{width:28%;padding:10px;background:#4caf50;color:white;border:none;border-radius:8px;cursor:pointer;}</style></head>
+    <body>
+    <div id="chat">
+        <div style="padding:20px;background:#2e7d32;color:white;text-align:center;">
+            <h2>🟩 MINECRAFT ЧАТ</h2>
+        </div>
+        <div id="messages">
+    '''
+    
+    for msg in minecraft_chat[-20:]:
+        html += f'''
+        <div class="msg">
+            <div class="msg-header">[{datetime.fromtimestamp(msg["time"]).strftime("%H:%M")}] <b>{msg["user"]}</b></div>
+            <div>{msg["text"]}</div>
+        </div>
+        '''
+    
+    html += '''
+        </div>
+        <div id="input">
+            <form method="post">
+                <input name="message" placeholder="Сообщение..." maxlength="200" required>
+                <button>Отправить</button>
+            </form>
         </div>
     </div>
-    <script>
-    function copyIP(ip) {{
-        navigator.clipboard.writeText(ip);
-        alert('IP скопирован: ' + ip);
-    }}
-    </script>
+    <div style="text-align:center;margin-top:20px;">
+        <a href="/catalog/Каталог/Minecraft" style="background:#007bff;color:white;padding:15px 30px;border-radius:10px;">📁 В каталог</a>
+    </div>
     </body></html>
     '''
-
+    return html
 
 @app.route('/profiles')
 def profiles():
@@ -246,15 +318,14 @@ def profile(username):
     if username not in users:
         return '<h1 style="color:red;text-align:center;padding:100px;">Пользователь не найден</h1><a href="/" style="display:block;text-align:center;">🏠 Главная</a>'
     
-    profile = user_profiles.get(username, {'bio': '', 'games': ['Minecraft'], 'achievements': ['Новичок'], 'join_date': '2026-01-15'})
+    profile = user_profiles.get(username, {'bio': '', 'achievements': []})
     is_admin = users[username].get('admin', False)
     role = user_roles.get(username, 'start')
     
     role_color = 'red' if is_admin else 'gold' if role == 'premium' else 'green' if role == 'vip' else 'gray'
     role_text = 'Администратор' if is_admin else role.upper()
     
-    games_list = ''.join([f'<li style="margin:8px 0;">{game}</li>' for game in profile['games']])
-    ach_list = ''.join([f'<li style="margin:8px 0;">{ach}</li>' for ach in profile['achievements']])
+    ach_list = ''.join([f'<li style="margin:8px 0;">{ach}</li>' for ach in profile.get('achievements', [])])
     
     return f'''
     <!DOCTYPE html>
@@ -271,15 +342,11 @@ def profile(username):
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
             <div>
                 <h3 style="margin-bottom:15px;">📝 О себе</h3>
-                <p style="font-size:16px;color:#555;">{profile['bio'] or 'Пока ничего не написал...'}</p>
-                <h3 style="margin:25px 0 15px 0;">🎮 Игры</h3>
-                <ul style="font-size:16px;">{games_list or '<li>Не указаны</li>'}</ul>
+                <p style="font-size:16px;color:#555;">{profile.get('bio', 'Пока ничего не написал...')}</p>
             </div>
             <div>
                 <h3 style="margin-bottom:15px;">🏆 Достижения</h3>
-                <ul style="font-size:16px;">{ach_list or '<li>Пока нет</li>'}</ul>
-                <h3 style="margin:25px 0 15px 0;">📅 Регистрация</h3>
-                <p style="font-size:18px;color:#007bff;">{profile['join_date']}</p>
+                <ul style="font-size:16px;">{ach_list or '<li>Пока нет достижений</li>'}</ul>
             </div>
         </div>
         <div style="text-align:center;margin-top:40px;">
@@ -288,75 +355,80 @@ def profile(username):
     </div></body></html>
     '''
 
-@app.route('/chat', methods=['GET', 'POST'])
-def chat():
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
     current_user = session.get('user')
-    if not current_user:
-        return redirect(url_for('login'))
+    if not current_user or not users.get(current_user, {}).get('admin'):
+        return '<h1 style="color:red;text-align:center;padding:100px;">❌ Только для админов!</h1>'
     
     if request.method == 'POST':
-        message = request.form['message'].strip()
-        if message and len(message) <= 200:
-            # ФИЛЬТР
-            message = filter_message(message)
-            
-            chat_messages.append({
-                'username': current_user,
-                'role': user_roles.get(current_user, 'start'),
-                'text': message,
-                'time': datetime.now().strftime('%H:%M'),
-                'id': len(chat_messages)
-            })
-            chat_messages[:] = chat_messages[-50:]  # Последние 50
+        action = request.form.get('action')
+        
+        if action == 'add_folder':
+            folder_name = request.form['folder_name'].strip()
+            location = request.form['folder_location'].strip()
+            if folder_name:
+                current_folder = catalog
+                loc_parts = location.split('/')
+                for part in loc_parts:
+                    if part not in current_folder:
+                        current_folder[part] = {}
+                    current_folder = current_folder[part]
+                current_folder[folder_name] = {}
+        
+        elif action == 'add_item':
+            item_name = request.form['item_name'].strip()
+            location = request.form['item_location'].strip()
+            info = request.form['item_info'].strip()
+            photo = request.form.get('item_photo', '').strip()
+            if item_name and location:
+                current_folder = catalog
+                loc_parts = location.split('/')
+                for part in loc_parts:
+                    if part not in current_folder:
+                        current_folder[part] = {}
+                    current_folder = current_folder[part]
+                current_folder[item_name] = {
+                    'location': location,
+                    'info': info,
+                    'photo': photo
+                }
     
     html = '''
     <!DOCTYPE html>
-    <html><head><title>Чат</title>
-    <meta charset="utf-8">
-    <style>body{font-family:Arial;padding:20px;background:#f0f2f5;}
-    #chat{max-width:1000px;margin:0 auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,0.1);}
-    #messages{max-height:500px;overflow-y:auto;padding:25px;}
-    .msg{margin-bottom:20px;padding:15px;background:#f8f9fa;border-radius:15px;}
-    .msg-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-    .username{font-weight:bold;font-size:16px;}
-    .role{padding:4px 10px;border-radius:10px;color:white;font-size:12px;font-weight:bold;}
-    .time{font-size:12px;color:#666;}
-    #input{padding:25px;border-top:1px solid #eee;}
-    #msg{width:75%;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;}
-    button{width:22%;padding:12px;background:#007bff;color:white;border:none;border-radius:8px;cursor:pointer;}</style></head>
+    <html><head><title>Админ панель</title>
+    <style>body{font-family:Arial;padding:30px;background:#f8f9fa;}
+    .section{background:white;margin:20px 0;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+    input,textarea,select{width:100%;padding:12px;margin:8px 0;border:2px solid #ddd;border-radius:8px;box-sizing:border-box;}
+    button{padding:12px 24px;background:#28a745;color:white;border:none;border-radius:8px;cursor:pointer;font-size:16px;}
+    .back-btn{background:#007bff;}</style></head>
     <body>
-    <div id="chat">
-        <div style="padding:25px;background:#007bff;color:white;text-align:center;">
-            <h1 style="margin:0;font-size:28px;">💬 Глобальный чат</h1>
-        </div>
-        <div id="messages">
-    '''
+    <h1 style="text-align:center;">🔧 Админ панель</h1>
     
-    for msg in chat_messages:
-        role_class = 'admin' if msg['username'] in users and users[msg['username']].get('admin') else msg['role']
-        role_color = 'red' if role_class == 'admin' else 'gold' if role_class == 'premium' else 'green' if role_class == 'vip' else 'gray'
-        html += f'''
-        <div class="msg">
-            <div class="msg-header">
-                <span class="username">{msg['username']}</span>
-                <span class="role" style="background:{role_color};">{msg['role'].upper()}</span>
-                <span class="time">{msg['time']}</span>
-            </div>
-            <div>{msg['text']}</div>
-        </div>
-        '''
-    
-    html += '''
-        </div>
-        <div id="input">
-            <form method="post">
-                <input name="message" id="msg" placeholder="Сообщение... (макс. 200 символов)" maxlength="200" required>
-                <button type="submit">Отправить</button>
-            </form>
-        </div>
+    <div class="section">
+        <h2>📁 Добавить папку</h2>
+        <form method="post">
+            <input type="hidden" name="action" value="add_folder">
+            <input name="folder_name" placeholder="Название папки" required>
+            <input name="folder_location" placeholder="Нахождение (Каталог/Minecraft)" value="Каталог">
+            <button type="submit">➕ Добавить папку</button>
+        </form>
     </div>
-    <div style="text-align:center;margin-top:20px;">
-        <a href="/" style="background:#28a745;color:white;padding:15px 30px;border-radius:10px;">🏠 Главная</a>
+    
+    <div class="section">
+        <h2>📦 Добавить предмет</h2>
+        <form method="post">
+            <input type="hidden" name="action" value="add_item">
+            <input name="item_name" placeholder="Название предмета" required>
+            <input name="item_location" placeholder="Нахождение (Каталог/Minecraft)" value="Каталог" required>
+            <textarea name="item_info" placeholder="Информация о предмете" rows="3"></textarea>
+            <input name="item_photo" placeholder="Фото (файл в static/, опционально)">
+            <button type="submit">➕ Добавить предмет</button>
+        </form>
+    </div>
+    
+    <div style="text-align:center;margin-top:40px;">
+        <a href="/" class="back-btn" style="padding:20px 40px;font-size:18px;">🏠 Главная</a>
     </div>
     </body></html>
     '''
@@ -377,57 +449,9 @@ def community():
     </body></html>
     '''
 
-@app.route('/admin')
-def admin_panel():
-    current_user = session.get('user')
-    if not current_user or not users.get(current_user, {}).get('admin'):
-        return '<h1 style="color:red;text-align:center;padding:100px;">❌ Только для админов!</h1>'
-    
-    # Статистика
-    stats = calculate_stats()
-    muted_users = [u for u in users if users[u].get('muted_until', 0) > get_timestamp()]
-    
-    html = f'''
-    <!DOCTYPE html>
-    <html><head><title>Админ панель</title>
-    <style>body{{font-family:Arial;padding:30px;background:#f8f9fa;}}
-    .section{{background:white;margin:20px 0;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}}
-    button{{padding:12px 24px;background:#dc3545;color:white;border:none;border-radius:8px;cursor:pointer;}}</style></head>
-    <body>
-    <h1 style="text-align:center;">🔧 Админ панель</h1>
-    
-    <div class="section">
-        <h2>📊 Статистика</h2>
-        <p>Онлайн: {stats['online']} | В муте: {len(muted_users)}</p>
-    </div>
-    
-    <div class="section">
-        <h2>🔇 Муты</h2>
-    '''
-    for user in muted_users:
-        remaining = int((users[user]['muted_until'] - get_timestamp()) / 60)
-        html += f'<p>{user} — ещё {remaining}м <a href="/admin/unmute/{user}" style="color:#28a745;">Размутить</a></p>'
-    
-    html += '''
-    </div>
-    <div style="text-align:center;margin-top:40px;">
-        <a href="/" style="background:#28a745;color:white;padding:20px 40px;border-radius:15px;font-size:18px;">🏠 Главная</a>
-    </div>
-    </body></html>
-    '''
-    return html
-
-@app.route('/admin/unmute/<username>')
-def unmute_user(username):
-    if session.get('user') in users and users[session['user']].get('admin'):
-        if username in users:
-            users[username]['muted_until'] = 0
-    return redirect('/admin')
-
-@app.route('/buy/<role>')
-def buy(role):
-    if session.get('user'):
-        user_roles[session['user']] = role
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
     return redirect(url_for('index'))
 
 @app.before_request
@@ -439,4 +463,3 @@ def update_activity():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
-
