@@ -9,8 +9,8 @@ app.secret_key = 'uznavaykin-secret-2026'
 
 # ДАННЫЕ
 users = {
-    'CatNap': {'password': '***', 'role': 'premium', 'admin': True},
-    'Назар': {'password': '***', 'role': 'premium', 'admin': True}
+    'CatNap': {'password': '120187', 'role': 'premium', 'admin': True},
+    'Назар': {'password': '120187', 'role': 'premium', 'admin': True}
 }
 user_profiles = {}
 user_roles = {}
@@ -541,3 +541,4 @@ def update_activity():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
+
