@@ -282,7 +282,7 @@ h1 {font-size:2.5em;margin:0;font-weight:700;}
 .delete-btn {position:absolute;top:5px;right:5px;background:#ff4757;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:bold;display:none;transition:all 0.3s;}
 .chat-msg:hover .delete-btn {display:block;}
 .chat-mute {background:#ffeaa7 !important;border-left:5px solid #fdcb6e;animation:pulse 2s infinite;}
-@keyframes pulse {0%{opacity:1;}50%{opacity:0.7;}100%{opacity:1;}}
+@keyframes pulse {{0%{{opacity:1;}}50%{{opacity:0.7;}}100%{{opacity:1;}}}}
 .mute-notice {background:#ff6b8a !important;border-left:5px solid #ee5a6f;padding:15px !important;margin:10px 0 !important;color:#fff !important;}
 #chat-input {padding:25px;border-top:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);}
 input[type="text"] {width:75%;padding:18px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;font-size:18px;background:rgba(255,255,255,0.9);box-sizing:border-box;}
@@ -759,4 +759,5 @@ input,textarea,button {{font-family:inherit;}}
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
+
 
