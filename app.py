@@ -43,8 +43,8 @@ def save_data():
 # ИНИЦИАЛИЗАЦИЯ ДАННЫХ
 data = load_data()
 users = data.get('users', {
-    'CatNap': {'password': '123', 'role': 'admin', 'admin': True},
-    'Назар': {'password': '123', 'role': 'admin', 'admin': True}
+    'CatNap': {'password': '120187', 'role': 'admin', 'admin': True},
+    'Назар': {'password': '120187', 'role': 'admin', 'admin': True}
 })
 user_profiles = data.get('user_profiles', {})
 user_roles = data.get('user_roles', {})
@@ -759,3 +759,4 @@ input,textarea,button {{font-family:inherit;}}
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
+
