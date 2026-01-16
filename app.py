@@ -264,7 +264,7 @@ def index():
 {css}
 * {margin:0;padding:0;box-sizing:border-box;}
 body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;min-height:100vh;padding:10px;overflow-x:hidden;}
-.container {max-width:1200px;margin:0 auto;border-radius:25px;overflow:hidden;}
+.container {{padding:20px;margin:10px;border-radius:20px;}}
 .header {padding:30px;text-align:center;}
 h1 {font-size:2.5em;margin:0;font-weight:700;}
 .stats {display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:15px;padding:25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;margin:20px;}
@@ -486,9 +486,9 @@ body {font-family:Arial,sans-serif;padding:20px;background:#f8f9fa;}
 text-decoration:none;display:inline-block;margin:50px 10px;transition:all 0.3s;}
 .back-btn:hover {transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,123,255,0.4);}
 @media (max-width:768px) {
-    .container {padding:20px;margin:10px;border-radius:20px;}
-    .grid {grid-template-columns:1fr !important;gap:20px;padding:10px;}
-    .breadcrumbs {font-size:16px;padding:20px;}
+    .container {{padding:20px;margin:10px;border-radius:20px;}}
+    .grid {{grid-template-columns:1fr !important;gap:20px;padding:10px;}}
+    .breadcrumbs {{font-size:16px;padding:20px;}}
 }
 </style></head>
 <body>
@@ -759,6 +759,7 @@ input,textarea,button {{font-family:inherit;}}
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
+
 
 
 
