@@ -226,7 +226,7 @@ def index():
             chat_messages[:] = chat_messages[-200:]
             save_data()
     
-        css_themes = {
+    css_themes = {
         'basic': '''
         body {background:linear-gradient(135deg,#f5f7fa,#c3cfe2);}
         .container {background:#fff;color:#333;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
@@ -262,35 +262,35 @@ def index():
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <style>
 {css}
-* {{margin:0;padding:0;box-sizing:border-box;}}
-body {{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;min-height:100vh;padding:10px;overflow-x:hidden;}}
-.container {{max-width:1200px;margin:0 auto;border-radius:25px;overflow:hidden;}}
-.header {{padding:30px;text-align:center;}}
-h1 {{font-size:2.5em;margin:0;font-weight:700;}}
-.stats {{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:15px;padding:25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;margin:20px;}}
-.stat-card {{background:rgba(255,255,255,0.9);padding:20px;border-radius:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:transform 0.3s;}}
-.stat-card:hover {{transform:translateY(-5px);}}
-.nav {{display:flex;flex-wrap:wrap;gap:12px;padding:25px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);justify-content:center;border-radius:20px;margin:0 20px 20px 20px;}}
-.nav-btn {{padding:15px 25px;color:white;text-decoration:none;border-radius:15px;font-weight:bold;flex:1;max-width:160px;text-align:center;transition:all 0.3s;font-size:16px;}}
-.nav-btn:hover {{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.3);}}
-.admin-btn {{background:rgba(255,255,255,0.9);color:#2d3436;flex:0 0 auto;font-weight:bold;}}
-#chat-container {{max-width:900px;margin:25px auto;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2);backdrop-filter:blur(20px);}}
-#chat-messages {{max-height:450px;overflow-y:auto;padding:25px;background:rgba(255,255,255,0.05);}}
-.chat-msg {{margin-bottom:20px;padding:20px;background:rgba(255,255,255,0.9);border-radius:18px;box-shadow:0 5px 20px rgba(0,0,0,0.1);position:relative;transition:all 0.3s;}}
-.chat-msg:hover {{box-shadow:0 10px 30px rgba(0,0,0,0.2);}}
-.chat-header {{font-weight:bold;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}}
-.delete-btn {{position:absolute;top:5px;right:5px;background:#ff4757;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:bold;display:none;transition:all 0.3s;}}
-.chat-msg:hover .delete-btn {{display:block;}}
-.chat-mute {{background:#ffeaa7 !important;border-left:5px solid #fdcb6e;animation:pulse 2s infinite;}}
-@keyframes pulse {{0%{{opacity:1;}}50%{{opacity:0.7;}}100%{{opacity:1;}}}}
-.mute-notice {{background:#ff6b8a !important;border-left:5px solid #ee5a6f;padding:15px !important;margin:10px 0 !important;color:#fff !important;}}
-#chat-input {{padding:25px;border-top:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);}}
-input[type="text"] {{width:75%;padding:18px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;font-size:18px;background:rgba(255,255,255,0.9);box-sizing:border-box;}}
-button[type="submit"] {{width:22%;padding:18px;background:linear-gradient(45deg,#00b894,#00cec9);color:white;border:none;border-radius:12px;cursor:pointer;font-size:18px;margin-left:3%;font-weight:bold;}}
-button:disabled {{background:#ddd !important;color:#999 !important;cursor:not-allowed !important;}}
-@media (max-width:1200px) {{.nav {{gap:8px;}}.nav-btn {{padding:12px 18px;font-size:15px;}}}}
-@media (max-width:768px) {{.stats {{grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;margin:10px;}}.nav {{flex-direction:column;gap:10px;padding:20px;margin:0 10px 20px;}}.nav-btn {{max-width:none;}}input[type="text"] {{width:100%;margin-bottom:15px;}}button[type="submit"] {{width:100%;margin-left:0;}}#chat-messages {{max-height:350px;padding:15px;}}}}
-@media (max-width:480px) {{body {{padding:5px;}}.container {{border-radius:15px;margin:5px;}}.header {{padding:20px;}}h1 {{font-size:2em;}}}}
+* {margin:0;padding:0;box-sizing:border-box;}
+body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;min-height:100vh;padding:10px;overflow-x:hidden;}
+.container {max-width:1200px;margin:0 auto;border-radius:25px;overflow:hidden;}
+.header {padding:30px;text-align:center;}
+h1 {font-size:2.5em;margin:0;font-weight:700;}
+.stats {display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:15px;padding:25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;margin:20px;}
+.stat-card {background:rgba(255,255,255,0.9);padding:20px;border-radius:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:transform 0.3s;}
+.stat-card:hover {transform:translateY(-5px);}
+.nav {display:flex;flex-wrap:wrap;gap:12px;padding:25px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);justify-content:center;border-radius:20px;margin:0 20px 20px 20px;}
+.nav-btn {padding:15px 25px;color:white;text-decoration:none;border-radius:15px;font-weight:bold;flex:1;max-width:160px;text-align:center;transition:all 0.3s;font-size:16px;}
+.nav-btn:hover {transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.3);}
+.admin-btn {background:rgba(255,255,255,0.9);color:#2d3436;flex:0 0 auto;font-weight:bold;}
+#chat-container {max-width:900px;margin:25px auto;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2);backdrop-filter:blur(20px);}
+#chat-messages {max-height:450px;overflow-y:auto;padding:25px;background:rgba(255,255,255,0.05);}
+.chat-msg {margin-bottom:20px;padding:20px;background:rgba(255,255,255,0.9);border-radius:18px;box-shadow:0 5px 20px rgba(0,0,0,0.1);position:relative;transition:all 0.3s;}
+.chat-msg:hover {box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+.chat-header {font-weight:bold;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.delete-btn {position:absolute;top:5px;right:5px;background:#ff4757;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:bold;display:none;transition:all 0.3s;}
+.chat-msg:hover .delete-btn {display:block;}
+.chat-mute {background:#ffeaa7 !important;border-left:5px solid #fdcb6e;animation:pulse 2s infinite;}
+@keyframes pulse {0%{opacity:1;}50%{opacity:0.7;}100%{opacity:1;}}
+.mute-notice {background:#ff6b8a !important;border-left:5px solid #ee5a6f;padding:15px !important;margin:10px 0 !important;color:#fff !important;}
+#chat-input {padding:25px;border-top:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);}
+input[type="text"] {width:75%;padding:18px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;font-size:18px;background:rgba(255,255,255,0.9);box-sizing:border-box;}
+button[type="submit"] {width:22%;padding:18px;background:linear-gradient(45deg,#00b894,#00cec9);color:white;border:none;border-radius:12px;cursor:pointer;font-size:18px;margin-left:3%;font-weight:bold;}
+button:disabled {background:#ddd !important;color:#999 !important;cursor:not-allowed !important;}
+@media (max-width:1200px) {.nav {gap:8px;}.nav-btn {padding:12px 18px;font-size:15px;}}
+@media (max-width:768px) {.stats {grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;margin:10px;}.nav {flex-direction:column;gap:10px;padding:20px;margin:0 10px 20px;}.nav-btn {max-width:none;}input[type="text"] {width:100%;margin-bottom:15px;}button[type="submit"] {width:100%;margin-left:0;}#chat-messages {max-height:350px;padding:15px;}}
+@media (max-width:480px) {body {padding:5px;}.container {border-radius:15px;margin:5px;}.header {padding:20px;}h1 {font-size:2em;}}
 </style></head>
 <body><div class="container">'''
     
@@ -373,7 +373,7 @@ function autoUpdateChat() {
                 lastMsgCount = data.count;
                 location.reload();
             }
-        }).catch(()=>{});  
+        }).catch(()=>{});
     }
 }
 setInterval(autoUpdateChat, 2000);
@@ -420,14 +420,14 @@ def api_delete_message(msg_id):
 def catalog_view(path=''):
     content = get_catalog_content(path)
     
-        if 'error' in content:
+    if 'error' in content:
         return f'''<!DOCTYPE html><html><body style="padding:50px;font-family:Arial;text-align:center;background:#f8f9fa;">
 <h1 style="color:#dc3545;font-size:2em;">❌ {content["error"]}</h1>
 <a href="/catalog" style="background:#007bff;color:white;padding:15px 30px;border-radius:10px;text-decoration:none;display:inline-block;margin:10px;font-size:18px;">📁 В Каталог</a>
 <a href="/" style="background:#28a745;color:white;padding:15px 30px;border-radius:10px;text-decoration:none;display:inline-block;margin-left:10px;font-size:18px;">🏠 Главная</a>
 </body></html>'''
     
-        breadcrumbs = '📁 <a href="/catalog" style="color:#007bff;">Каталог</a>'
+    breadcrumbs = '📁 <a href="/catalog" style="color:#007bff;">Каталог</a>'
     parts = [p.strip() for p in path.split('/') if p.strip()]
     temp_path = []
     for part in parts:
@@ -475,21 +475,21 @@ def catalog_view(path=''):
 <html><head><title>📁 Каталог {path or "Главная"}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {{font-family:Arial,sans-serif;padding:20px;background:#f8f9fa;}}
-.container {{max-width:1300px;margin:0 auto;background:white;border-radius:25px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.1);}}
-.breadcrumbs {{margin:30px 0;padding:25px;background:#e9ecef;border-radius:20px;font-size:18px;line-height:1.6;}}
-.breadcrumbs a {{color:#007bff;text-decoration:none;font-weight:500;}}
-.breadcrumbs a:hover {{text-decoration:underline;}}
-.grid {{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;}}
-.grid > a:hover, .grid > div:hover {{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.15) !important;}}
-.back-btn {{background:#007bff;color:white;padding:18px 40px;border-radius:15px;font-size:20px;font-weight:bold;
-text-decoration:none;display:inline-block;margin:50px 10px;transition:all 0.3s;}}
-.back-btn:hover {{transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,123,255,0.4);}}
-@media (max-width:768px) {{
-    .container {{padding:20px;margin:10px;border-radius:20px;}}
-    .grid {{grid-template-columns:1fr !important;gap:20px;padding:10px;}}
-    .breadcrumbs {{font-size:16px;padding:20px;}}
-}}
+body {font-family:Arial,sans-serif;padding:20px;background:#f8f9fa;}
+.container {max-width:1300px;margin:0 auto;background:white;border-radius:25px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.1);}
+.breadcrumbs {margin:30px 0;padding:25px;background:#e9ecef;border-radius:20px;font-size:18px;line-height:1.6;}
+.breadcrumbs a {color:#007bff;text-decoration:none;font-weight:500;}
+.breadcrumbs a:hover {text-decoration:underline;}
+.grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;}
+.grid > a:hover, .grid > div:hover {transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.15) !important;}
+.back-btn {background:#007bff;color:white;padding:18px 40px;border-radius:15px;font-size:20px;font-weight:bold;
+text-decoration:none;display:inline-block;margin:50px 10px;transition:all 0.3s;}
+.back-btn:hover {transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,123,255,0.4);}
+@media (max-width:768px) {
+    .container {padding:20px;margin:10px;border-radius:20px;}
+    .grid {grid-template-columns:1fr !important;gap:20px;padding:10px;}
+    .breadcrumbs {font-size:16px;padding:20px;}
+}
 </style></head>
 <body>
 <div class="container">
@@ -598,68 +598,6 @@ def logout():
     session.pop('user', None)
     return redirect(url_for('index'))
 
-@app.route('/catalog/<path:path>')
-@app.route('/catalog')
-def catalog_view(path=''):
-    content = get_catalog_content(path)
-    
-    if 'error' in content:
-        return f'''<!DOCTYPE html><html><body style="padding:50px;font-family:Arial;text-align:center;background:#f8f9fa;">
-<h1 style="color:#dc3545;font-size:2.5em;">❌ {content["error"]}</h1>
-<a href="/catalog" style="background:#007bff;color:white;padding:20px 40px;border-radius:15px;text-decoration:none;display:inline-block;margin:20px;font-size:20px;font-weight:bold;">📁 В Каталог</a>
-<a href="/" style="background:#28a745;color:white;padding:20px 40px;border-radius:15px;text-decoration:none;display:inline-block;margin-left:20px;font-size:20px;font-weight:bold;">🏠 Главная</a>
-</body></html>'''
-    
-    breadcrumbs = '📁 <a href="/catalog" style="color:#007bff;text-decoration:none;">Главная</a>'
-    parts = [p.strip() for p in path.split('/') if p.strip()]
-    temp_path = []
-    for part in parts:
-        temp_path.append(part)
-        path_str = '/'.join(temp_path)
-        breadcrumbs += f' → <a href="/catalog/{path_str}" style="color:#007bff;text-decoration:none;">{part}</a>'
-    
-    content_html = '<div class="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;padding:30px;">'
-    
-    # ПАПКИ
-    for folder in sorted(content['folders']):
-        content_html += f'''
-        <a href="/catalog/{path}/{folder}" style="background:#e3f2fd;padding:35px;border-radius:25px;border-left:6px solid #2196f3;text-decoration:none;display:block;text-align:center;transition:all 0.3s;font-family:Arial;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-            <h3 style="margin:0 0 15px 0;color:#2196f3;font-size:2em;">📁 {folder}</h3>
-            <p style="margin:0;color:#666;font-size:1.2em;">Папка</p>
-        </a>'''
-    
-    # ПРЕДМЕТЫ
-    for item_name, item_data in sorted(content['items']):
-        photo_html = ''
-        if item_data.get('photo'):
-            photo_html = f'<img src="{item_data["photo"]}" style="max-width:100%;max-height:200px;border-radius:15px;margin:15px 0;box-shadow:0 10px 30px rgba(0,0,0,0.2);" alt="Фото {item_name}">'
-        
-        content_html += f'''
-        <div style="background:#f3e5f5;padding:35px;border-radius:25px;border-left:6px solid #9c27b0;box-shadow:0 10px 30px rgba(0,0,0,0.1);font-family:Arial;">
-            <h3 style="font-size:2.2em;font-weight:bold;margin-bottom:20px;color:#333;">{item_name}</h3>
-            <p style="margin:10px 0;"><b style="color:#555;font-size:1.1em;">📍 Местоположение:</b><br><span style="color:#666;">{item_data.get("location", "Не указано")}</span></p>
-            <p style="margin:10px 0;line-height:1.7;"><b style="color:#555;font-size:1.1em;">ℹ️ Информация:</b><br><span style="color:#666;">{item_data.get("info", "—")}</span></p>
-            {photo_html}
-        </div>'''
-    
-    content_html += '</div>'
-    
-    if not content['folders'] and not content['items']:
-        content_html = '<div style="text-align:center;color:#666;font-size:2.5em;margin:100px 0;padding:80px;background:#f8f9fa;border-radius:30px;border:4px dashed #ddd;font-family:Arial;box-shadow:0 20px 60px rgba(0,0,0,0.1);">📭 Эта папка пуста</div>'
-    
-    return f'''<!DOCTYPE html>
-<html><head><title>📁 Каталог {path or "Узнавайкин"}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>body{{font-family:Arial,sans-serif;padding:20px;background:#f8f9fa;}}.container{{max-width:1300px;margin:0 auto;background:white;border-radius:30px;padding:50px;box-shadow:0 25px 80px rgba(0,0,0,0.1);}}.breadcrumbs{{margin:40px 0;padding:30px;background:#e9ecef;border-radius:25px;font-size:20px;}}.back-btn{{background:#007bff;color:white;padding:22px 50px;border-radius:20px;font-size:22px;font-weight:bold;text-decoration:none;display:inline-block;margin:50px 10px;box-shadow:0 10px 30px rgba(0,0,0,0.2);}}.back-btn:hover{{transform:translateY(-3px);box-shadow:0 15px 40px rgba(0,0,0,0.3);}}@media (max-width:768px){{.container{{padding:25px;margin:10px;border-radius:25px;}}.grid{{grid-template-columns:1fr !important;gap:25px;}}}}</style></head>
-<body><div class="container">
-    <div class="breadcrumbs">{breadcrumbs}</div>
-    {content_html}
-    <div style="text-align:center;">
-        <a href="/catalog" class="back-btn">📁 В Каталог</a>
-        <a href="/" class="back-btn" style="background:#28a745;">🏠 Главная</a>
-    </div>
-</div></body></html>'''
-
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     current_user = session.get('user', '')
@@ -694,135 +632,130 @@ def admin():
                 moderators[target] = get_timestamp() + duration
                 message = f'✅ {target} — модератор на {duration/3600}ч!'
         
-        elif action == 'remove_moderator':
-            target = request.form['target'].strip()
-            moderators.pop(target, None)
-            message = f'✅ {target} снят с модера!'
-        
         elif action == 'add_item':
             path = request.form['path'].strip()
             name = request.form['name'].strip()
             info = request.form['info'].strip()
-            photo = request.form.get('photo', '').strip()
-            if add_item(path, name, info, photo=photo):
-                message = f'✅ Добавлен: {path}/{name}'
+            location = request.form['location'].strip()
+            photo = request.form['photo'].strip()
+            if add_item(path, name, info, location, photo):
+                message = f'✅ Предмет "{name}" добавлен в {path}!'
         
         elif action == 'add_folder':
             path = request.form['path'].strip()
             name = request.form['name'].strip()
             if add_folder(path, name):
-                message = f'✅ Папка создана: {path}/{name}'
+                message = f'✅ Папка "{name}" добавлена в {path}!'
         
         elif action == 'delete':
             path = request.form['path'].strip()
             if delete_item(path):
-                message = f'✅ УДАЛЕН: {path}'
-            else:
-                message = f'❌ Не найден: {path}'
+                message = f'✅ Удален: {path}'
         
         save_data()
     
-    # Дерево каталога
-    tree_html = '<div style="max-height:350px;overflow:auto;background:#f0f8ff;padding:20px;border-radius:15px;border:2px solid #2196f3;margin:15px 0;">'
-    def render_tree(items, level=0):
-        html = ''
-        for item in items:
-            indent = '   ' * level
-            html += f'{indent}📁 <b>{item["name"]}</b> <small style="color:#666;">({item["path"]})</small><br>'
-            if 'children' in item:
-                html += render_tree(item['children'], level+1)
-        return html
-    tree_html += render_tree(catalog_tree)
-    tree_html += '</div>'
+    admin_html = f'''
+    <div style="background:#e8f5e8;padding:20px;border-radius:15px;margin:20px 0;">
+        <h2 style="color:#27ae60;">📊 СТАТИСТИКА</h2>
+        <p>👥 Всего пользователей: {len(users)}</p>
+        <p>💬 Сообщений в чате: {len(chat_messages)}</p>
+        <p>📁 Каталог: {len(catalog)} разделов</p>
+    </div>
+    
+    {message and f'<div style="background:#d4edda;color:#155724;padding:15px;border-radius:10px;margin:20px 0;border:1px solid #c3e6cb;"><b>✅ {message}</b></div>' or ''}
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:30px;">
+    
+    <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h3 style="color:#dc3545;">🔇 МУТ</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="mute">
+            <input name="target" placeholder="Ник" required style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;">
+            <input type="number" name="duration" value="5" min="1" max="1440" style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;"> мин
+            <input name="reason" placeholder="Причина" maxlength="100" style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;">
+            <button type="submit" style="width:100%;padding:12px;background:#dc3545;color:white;border:none;border-radius:8px;cursor:pointer;">🔇 ЗАМУТИТЬ</button>
+        </form>
+    </div>
+    
+    <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h3 style="color:#007bff;">🛡️ МОДЕРАТОР</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="add_moderator">
+            <input name="target" placeholder="Ник" required style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;">
+            <input type="number" name="duration" value="24" min="1" max="168" style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;"> ч
+            <button type="submit" style="width:100%;padding:12px;background:#007bff;color:white;border:none;border-radius:8px;cursor:pointer;">🛡️ НАЗНАЧИТЬ</button>
+        </form>
+    </div>
+    
+    </div>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:30px;margin:30px 0;">
+    
+    <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h3 style="color:#28a645;">➕ ДОБАВИТЬ ПРЕДМЕТ</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="add_item">
+            <input name="path" placeholder="Путь (Minecraft/Руды)" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;">
+            <input name="name" placeholder="Название" required style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;">
+            <input name="location" placeholder="Местоположение" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;">
+            <textarea name="info" placeholder="Описание" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;height:80px;"></textarea>
+            <input name="photo" placeholder="URL фото" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;">
+            <button type="submit" style="width:100%;padding:12px;background:#28a645;color:white;border:none;border-radius:8px;cursor:pointer;">➕ ДОБАВИТЬ</button>
+        </form>
+    </div>
+    
+    <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h3 style="color:#28a645;">📁 ДОБАВИТЬ ПАПКУ</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="add_folder">
+            <input name="path" placeholder="Путь (Minecraft)" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;">
+            <input name="name" placeholder="Название папки" required style="width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;">
+            <button type="submit" style="width:100%;padding:12px;background:#28a645;color:white;border:none;border-radius:8px;cursor:pointer;">📁 СОЗДАТЬ</button>
+        </form>
+    </div>
+    
+    </div>
+    
+    <div style="background:#fff3cd;padding:20px;border-radius:15px;margin:20px 0;">
+        <h3 style="color:#856404;">🗑️ УДАЛЕНИЕ</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="delete">
+            <input name="path" placeholder="Полный путь (Minecraft/Алмаз)" required style="width:100%;padding:12px;margin:10px 0;border:2px solid #ffc107;border-radius:8px;">
+            <button type="submit" style="width:100%;padding:12px;background:#dc3545;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;" onclick="return confirm('УДАЛИТЬ навсегда?')">🗑️ УДАЛИТЬ</button>
+        </form>
+    </div>
+    
+    <div style="background:white;padding:25px;border-radius:20px;margin:30px 0;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h3 style="color:#6f42c1;">📁 ДЕРЕВО КАТАЛОГА</h3>
+        <div style="font-family:monospace;background:#f8f9fa;padding:20px;border-radius:10px;max-height:300px;overflow:auto;font-size:14px;">
+        <pre>{json.dumps(catalog_tree, ensure_ascii=False, indent=2)[:2000]}...</pre>
+        </div>
+    </div>'''
     
     return f'''<!DOCTYPE html>
-<html><head><title>🔧 Админ-панель v32</title>
+<html><head><title>🔧 Админ-панель</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>body{{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#ff6b6b,#4ecdc4);padding:20px;min-height:100vh;}}.container{{max-width:1200px;margin:auto;background:white;border-radius:30px;padding:50px;box-shadow:0 30px 100px rgba(0,0,0,0.2);}}.section{{background:#f8f9fa;margin:30px 0;padding:40px;border-radius:25px;box-shadow:0 15px 40px rgba(0,0,0,0.1);}}h2{{color:#333;margin-bottom:25px;border-left:6px solid #00b894;padding-left:20px;font-size:2em;}}input,select,textarea{{width:100%;padding:18px;margin:12px 0;border:2px solid #ddd;border-radius:15px;font-size:16px;box-sizing:border-box;}}button{{width:100%;padding:20px;margin:12px 0;border:none;border-radius:15px;font-size:18px;font-weight:bold;cursor:pointer;transition:all 0.3s;box-shadow:0 5px 15px rgba(0,0,0,0.2);}}button:hover{{transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.3);}}.btn-mute{{background:#ff6b8a;color:white;}}.btn-mod{{background:#00b894;color:white;}}.btn-add{{background:#00cec9;color:white;}}.btn-delete{{background:#e17055;color:white;}}.message{{padding:25px;margin:30px 0;border-radius:20px;font-weight:bold;text-align:center;font-size:20px;}}.catalog-list{{background:#e3f2fd !important;border:3px solid #2196f3;}}</style></head>
-<body><div class="container">
-<h1 style="text-align:center;color:#333;margin-bottom:50px;font-size:3em;">🔧 Админ-панель v32</h1>
-
-{message and f'<div class="message" style="background:#d4edda;color:#155724;border:2px solid #c3e6cb;">{message}</div>' or ''}
-
-<div class="section catalog-list"><h2>📁 ДЕРЕВО КАТАЛОГА</h2>{tree_html}</div>
-
-<div class="section"><h2>🔇 МУТИТЬ ИГРОКА</h2>
-<form method="post"><input type="hidden" name="action" value="mute">
-<input name="target" placeholder="Имя игрока" required maxlength="20">
-<input name="duration" type="number" value="5" placeholder="Минуты" min="1" max="1440">
-<input name="reason" placeholder="Причина мута (до 100 символов)" maxlength="100" required>
-<button class="btn-mute">🔇 ЗАМУТИТЬ</button></form></div>
-
-<div class="section"><h2>👮 МОДЕРАТОРЫ</h2>
-<form method="post"><input type="hidden" name="action" value="add_moderator">
-<input name="target" placeholder="Имя игрока" required maxlength="20">
-<input name="duration" type="number" value="24" placeholder="Часы" min="1" max="168">
-<button class="btn-mod">👮 НАЗНАЧИТЬ МОДЕРАТОРА</button></form>
-<form method="post"><input type="hidden" name="action" value="remove_moderator">
-<input name="target" placeholder="Имя модератора" required maxlength="20">
-<button class="btn-delete">❌ СНЯТЬ МОДЕРАТОРА</button></form></div>
-
-<div class="section"><h2>➕ ДОБАВИТЬ ПРЕДМЕТ</h2>
-<form method="post"><input type="hidden" name="action" value="add_item">
-<input name="path" placeholder="Путь: Minecraft или World of Tanks" list="paths" required>
-<datalist id="paths">
-    <option value="Minecraft">
-    <option value="World of Tanks">
-    <option value="Minecraft/Ресурсы">
-</datalist>
-<input name="name" placeholder="Название: Алмаз" required maxlength="50">
-<textarea name="info" placeholder="Описание предмета" required rows="4" maxlength="300"></textarea>
-<input name="photo" placeholder="URL фото (необязательно)">
-<button class="btn-add">➕ ДОБАВИТЬ ПРЕДМЕТ</button></form></div>
-
-<div class="section"><h2>📁 ДОБАВИТЬ ПАПКУ</h2>
-<form method="post"><input type="hidden" name="action" value="add_folder">
-<input name="path" placeholder="Путь: (пусто = главная)" list="paths2">
-<datalist id="paths2">
-    <option value="">
-    <option value="Minecraft">
-    <option value="World of Tanks">
-</datalist>
-<input name="name" placeholder="Название папки: CS2" required maxlength="50">
-<button class="btn-add">📁 СОЗДАТЬ ПАПКУ</button></form></div>
-
-<div class="section"><h2>🗑️ УДАЛИТЬ</h2>
-<form method="post"><input type="hidden" name="action" value="delete">
-<input name="path" placeholder="Полный путь: Minecraft/Алмаз" list="delete_paths" required>
-<datalist id="delete_paths">
-    <option value="Minecraft/Алмаз">
-    <option value="Minecraft/Железо">
-    <option value="World of Tanks/Т-34">
-    <option value="World of Tanks/IS-7">
-</datalist>
-<button class="btn-delete">🗑️ УДАЛИТЬ ПРЕДМЕТ/ПАПКУ</button></form></div>
-
-<a href="/" style="display:block;text-align:center;background:#007bff;color:white;padding:30px 70px;border-radius:25px;font-size:24px;font-weight:bold;text-decoration:none;margin:70px auto 30px;max-width:500px;box-shadow:0 15px 40px rgba(0,0,0,0.2);">🏠 На главную страницу</a>
-</div></body></html>'''
-
-@app.route('/api/chat_count')
-def api_chat_count():
-    return jsonify({'count': len(chat_messages)})
-
-@app.route('/api/delete_message/<int:msg_id>', methods=['DELETE'])
-def api_delete_message(msg_id):
-    current_user = session.get('user', '')
-    if not current_user or not (is_admin(current_user) or is_moderator(current_user)):
-        return jsonify({'error': 'Нет доступа'}), 403
-    
-    for i, msg in enumerate(chat_messages):
-        if msg['id'] == msg_id and msg['user'] != current_user:
-            del chat_messages[i]
-            save_data()
-            return jsonify({'success': True})
-    return jsonify({'error': 'Сообщение не найдено'}), 404
-
-@app.before_request
-def update_activity():
-    user = session.get('user')
-    if user and user in users:
-        user_activity[user] = get_timestamp()
+<style>
+body {{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#ff9a9e,#fecfef);padding:30px;color:#333;}}
+.container {{max-width:1400px;margin:auto;background:white;border-radius:30px;padding:40px;box-shadow:0 30px 100px rgba(0,0,0,0.2);}}
+h1 {{text-align:center;color:#2d3436;font-size:3em;margin-bottom:30px;}}
+h2,h3 {{color:#2d3436;margin-top:30px;}}
+form {{margin:20px 0;}}
+input,textarea,button {{font-family:inherit;}}
+.back-btn {{background:#6c757d;color:white;padding:20px 40px;border-radius:20px;font-size:20px;font-weight:bold;text-decoration:none;display:inline-block;margin:40px 20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);transition:all 0.3s;}}
+.back-btn:hover {{transform:translateY(-3px);box-shadow:0 15px 40px rgba(0,0,0,0.3);}}
+@media (max-width:768px) {{body {{padding:10px;}}.container {{padding:20px;border-radius:20px;}}}}
+</style></head>
+<body>
+<div class="container">
+    <h1>🔧 Админ-панель {current_user}</h1>
+    {admin_html}
+    <div style="text-align:center;">
+        <a href="/" class="back-btn">🏠 Главная</a>
+    </div>
+</div>
+</body></html>'''
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
