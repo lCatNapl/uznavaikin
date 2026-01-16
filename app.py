@@ -254,45 +254,47 @@ def index():
         '''
     }
     
-    css = css_themes.get(design, css_themes['basic'])
-    
-    html = f'''<!DOCTYPE html>
-<html><head><title>🚀 Узнавайкин v32</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<style>
-{css}
-* {margin:0;padding:0;box-sizing:border-box;}
-body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;min-height:100vh;padding:10px;overflow-x:hidden;}
-.container {{ padding:20px;margin:10px;border-radius:20px; }}
-.header {padding:30px;text-align:center;}
-h1 {font-size:2.5em;margin:0;font-weight:700;}
-.stats {display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:15px;padding:25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;margin:20px;}
-.stat-card {background:rgba(255,255,255,0.9);padding:20px;border-radius:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:transform 0.3s;}
-.stat-card:hover {transform:translateY(-5px);}
-.nav {display:flex;flex-wrap:wrap;gap:12px;padding:25px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);justify-content:center;border-radius:20px;margin:0 20px 20px 20px;}
-.nav-btn {padding:15px 25px;color:white;text-decoration:none;border-radius:15px;font-weight:bold;flex:1;max-width:160px;text-align:center;transition:all 0.3s;font-size:16px;}
-.nav-btn:hover {transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.3);}
-.admin-btn {background:rgba(255,255,255,0.9);color:#2d3436;flex:0 0 auto;font-weight:bold;}
-#chat-container {max-width:900px;margin:25px auto;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2);backdrop-filter:blur(20px);}
-#chat-messages {max-height:450px;overflow-y:auto;padding:25px;background:rgba(255,255,255,0.05);}
-.chat-msg {margin-bottom:20px;padding:20px;background:rgba(255,255,255,0.9);border-radius:18px;box-shadow:0 5px 20px rgba(0,0,0,0.1);position:relative;transition:all 0.3s;}
-.chat-msg:hover {box-shadow:0 10px 30px rgba(0,0,0,0.2);}
-.chat-header {font-weight:bold;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.delete-btn {position:absolute;top:5px;right:5px;background:#ff4757;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:bold;display:none;transition:all 0.3s;}
-.chat-msg:hover .delete-btn {display:block;}
-.chat-mute {background:#ffeaa7 !important;border-left:5px solid #fdcb6e;animation:pulse 2s infinite;}
+    css = css_themes.get(design, css_themes['basic']) + """
+* {{margin:0;padding:0;box-sizing:border-box;}}
+body {{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;min-height:100vh;padding:10px;overflow-x:hidden;}}
+.container {{max-width:1200px;margin:0 auto;border-radius:25px;overflow:hidden;}}
+.header {{padding:30px;text-align:center;}}
+h1 {{font-size:2.5em;margin:0;font-weight:700;}}
+.stats {{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:15px;padding:25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;margin:20px;}}
+.stat-card {{background:rgba(255,255,255,0.9);padding:20px;border-radius:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.1);transition:transform 0.3s;}}
+.stat-card:hover {{transform:translateY(-5px);}}
+.nav {{display:flex;flex-wrap:wrap;gap:12px;padding:25px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);justify-content:center;border-radius:20px;margin:0 20px 20px 20px;}}
+.nav-btn {{padding:15px 25px;color:white;text-decoration:none;border-radius:15px;font-weight:bold;flex:1;max-width:160px;text-align:center;transition:all 0.3s;font-size:16px;}}
+.nav-btn:hover {{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.3);}}
+.admin-btn {{background:rgba(255,255,255,0.9);color:#2d3436;flex:0 0 auto;font-weight:bold;}}
+#chat-container {{max-width:900px;margin:25px auto;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2);backdrop-filter:blur(20px);}}
+#chat-messages {{max-height:450px;overflow-y:auto;padding:25px;background:rgba(255,255,255,0.05);}}
+.chat-msg {{margin-bottom:20px;padding:20px;background:rgba(255,255,255,0.9);border-radius:18px;box-shadow:0 5px 20px rgba(0,0,0,0.1);position:relative;transition:all 0.3s;}}
+.chat-msg:hover {{box-shadow:0 10px 30px rgba(0,0,0,0.2);}}
+.chat-header {{font-weight:bold;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}}
+.delete-btn {{position:absolute;top:5px;right:5px;background:#ff4757;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;font-weight:bold;display:none;transition:all 0.3s;}}
+.chat-msg:hover .delete-btn {{display:block;}}
+.chat-mute {{background:#ffeaa7 !important;border-left:5px solid #fdcb6e;animation:pulse 2s infinite;}}
 @keyframes pulse {{0%{{opacity:1;}}50%{{opacity:0.7;}}100%{{opacity:1;}}}}
-.mute-notice {background:#ff6b8a !important;border-left:5px solid #ee5a6f;padding:15px !important;margin:10px 0 !important;color:#fff !important;}
-#chat-input {padding:25px;border-top:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);}
-input[type="text"] {width:75%;padding:18px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;font-size:18px;background:rgba(255,255,255,0.9);box-sizing:border-box;}
-button[type="submit"] {width:22%;padding:18px;background:linear-gradient(45deg,#00b894,#00cec9);color:white;border:none;border-radius:12px;cursor:pointer;font-size:18px;margin-left:3%;font-weight:bold;}
-button:disabled {background:#ddd !important;color:#999 !important;cursor:not-allowed !important;}
+.mute-notice {{background:#ff6b8a !important;border-left:5px solid #ee5a6f;padding:15px !important;margin:10px 0 !important;color:#fff !important;}}
+#chat-input {{padding:25px;border-top:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);}}
+input[type="text"] {{width:75%;padding:18px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;font-size:18px;background:rgba(255,255,255,0.9);box-sizing:border-box;}}
+button[type="submit"] {{width:22%;padding:18px;background:linear-gradient(45deg,#00b894,#00cec9);color:white;border:none;border-radius:12px;cursor:pointer;font-size:18px;margin-left:3%;font-weight:bold;}}
+button:disabled {{background:#ddd !important;color:#999 !important;cursor:not-allowed !important;}}
+
 @media (max-width:1200px) {{.nav {{gap:8px;}}.nav-btn {{padding:12px 18px;font-size:15px;}}}}
-@media (max-width:768px) {{.stats {{grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;margin:10px;}}.nav {{flex-direction:column;gap:10px;padding:20px;margin:0 10px 20px;}}.nav-btn {{max-width:none;}}input[type="text"] {{width:100%;margin-bottom:15px;}}button[type="submit"] {{width:100%;margin-left:0;}}#chat-messages {{max-height:350px;padding:15px;}}}}
+@media (max-width:768px) {{
+    .stats {{grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;margin:10px;}}
+    .nav {{flex-direction:column;gap:10px;padding:20px;margin:0 10px 20px;}}
+    .nav-btn {{max-width:none;}}
+    input[type="text"] {{width:100%;margin-bottom:15px;}}
+    button[type="submit"] {{width:100%;margin-left:0;}}
+    #chat-messages {{max-height:350px;padding:15px;}}
+    .container {{padding:20px;margin:10px;border-radius:20px;}}
+}}
 @media (max-width:480px) {{body {{padding:5px;}}.container {{border-radius:15px;margin:5px;}}.header {{padding:20px;}}h1 {{font-size:2em;}}}}
-</style></head>
-<body><div class="container">'''
+"""
+
     
     if current_user:
         html += f'<div class="header"><h1>🚀 Узнавайкин v32</h1><p>👤 <b style="font-size:1.2em;">{current_user}</b> | <span style="background:rgba(255,255,255,0.3);padding:8px 15px;border-radius:15px;font-size:1.1em;font-weight:bold;">{get_role_display(current_user)}</span></p></div>'
@@ -759,3 +761,4 @@ input,textarea,button {{font-family:inherit;}}
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))  # Render default 10000!
     app.run(host='0.0.0.0', port=port, debug=False)
+
