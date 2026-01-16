@@ -288,9 +288,9 @@ h1 {font-size:2.5em;margin:0;font-weight:700;}
 input[type="text"] {width:75%;padding:18px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;font-size:18px;background:rgba(255,255,255,0.9);box-sizing:border-box;}
 button[type="submit"] {width:22%;padding:18px;background:linear-gradient(45deg,#00b894,#00cec9);color:white;border:none;border-radius:12px;cursor:pointer;font-size:18px;margin-left:3%;font-weight:bold;}
 button:disabled {background:#ddd !important;color:#999 !important;cursor:not-allowed !important;}
-@media (max-width:1200px) {.nav {gap:8px;}.nav-btn {padding:12px 18px;font-size:15px;}}
-@media (max-width:768px) {.stats {grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;margin:10px;}.nav {flex-direction:column;gap:10px;padding:20px;margin:0 10px 20px;}.nav-btn {max-width:none;}input[type="text"] {width:100%;margin-bottom:15px;}button[type="submit"] {width:100%;margin-left:0;}#chat-messages {max-height:350px;padding:15px;}}
-@media (max-width:480px) {body {padding:5px;}.container {border-radius:15px;margin:5px;}.header {padding:20px;}h1 {font-size:2em;}}
+@media (max-width:1200px) {{.nav {{gap:8px;}}.nav-btn {{padding:12px 18px;font-size:15px;}}}}
+@media (max-width:768px) {{.stats {{grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;margin:10px;}}.nav {{flex-direction:column;gap:10px;padding:20px;margin:0 10px 20px;}}.nav-btn {{max-width:none;}}input[type="text"] {{width:100%;margin-bottom:15px;}}button[type="submit"] {{width:100%;margin-left:0;}}#chat-messages {{max-height:350px;padding:15px;}}}}
+@media (max-width:480px) {{body {{padding:5px;}}.container {{border-radius:15px;margin:5px;}}.header {{padding:20px;}}h1 {{font-size:2em;}}}}
 </style></head>
 <body><div class="container">'''
     
@@ -759,5 +759,6 @@ input,textarea,button {{font-family:inherit;}}
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
+
 
 
