@@ -264,7 +264,7 @@ def index():
 {css}
 * {margin:0;padding:0;box-sizing:border-box;}
 body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;min-height:100vh;padding:10px;overflow-x:hidden;}
-.container {{padding:20px;margin:10px;border-radius:20px;}}
+.container {{ padding:20px;margin:10px;border-radius:20px; }}
 .header {padding:30px;text-align:center;}
 h1 {font-size:2.5em;margin:0;font-weight:700;}
 .stats {display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:15px;padding:25px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;margin:20px;}
@@ -757,9 +757,5 @@ input,textarea,button {{font-family:inherit;}}
 </body></html>'''
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 10000))  # Render default 10000!
     app.run(host='0.0.0.0', port=port, debug=False)
-
-
-
-
